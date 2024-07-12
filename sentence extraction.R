@@ -52,11 +52,21 @@ sentence_extraction=function(term_to_be_searched, outfilename, start_pos,end_pos
   return(result_df)
 }
 
-setwd("path_to_folder_with_xml_files")
-speces_name = read.csv("species_name.csv")
+#reading all species factor and conservaton file in R
+species_name = read.csv("species_name.csv")
 factor_terms = read.csv("factor_terms.csv")
 conservation_status = read.csv("conservation_status.csv")
 
-species_result = sentence_extraction(species_name, "all_result.csv" )
-factor_result = sentence_extraction(factor_terms, "all_result.csv" )
-conservation_result = sentence_extraction(conservation_status, "all_result.csv" )
+#running sentence_extraction fucion on species factor and conservation
+species_result = sentence_extraction(species_name, "all_species_result.csv" )
+colnames(species_result) = c("pmc","term1","evidence1")
+factor_result = sentence_extraction(factor_terms, "all_factor_result.csv" )
+colnames(factor_result) = c("pmc","term2","evidence2")
+conservation_result = sentence_extraction(conservation_status, "all_consevation_result.csv" )
+colnames(conservation_result) = c("pmc","term3","evidence3")
+
+#finding commomn 
+merged_species_factor = merge.data.frame(species_result,factor_result,by = "pmc")
+merged_species_factor_conservation = merge.data.frame(merged_species_factor,conservation_result,by = "pmc")
+
+write.csv(merged_species_factor_conservation,"merged_species_factor_conservation.csv")
