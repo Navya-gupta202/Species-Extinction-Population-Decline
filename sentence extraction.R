@@ -27,7 +27,6 @@ give_epmc_sentences2 <- function (file,term)
 }
 
 
-
 #funcion to create table with given list of terms using give_epmc_sentences2() function
 sentence_extraction=function(term_to_be_searched, outfilename, start_pos,end_pos)
 {
